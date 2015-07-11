@@ -1,9 +1,16 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express'),
+    router = express.Router(),
+    contentsRoutes = require('./contents/routes');
 
-/* GET home page. */
+router.use(function (req, res, next) {
+    res.set('Access-Control-Allow-Origin', '*');
+    next();
+});
+
 router.get('/', function(req, res, next) {
   res.send({message: 'hello, world'});
 });
+
+router.use('/contents', contentsRoutes);
 
 module.exports = router;
