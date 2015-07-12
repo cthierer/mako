@@ -15,6 +15,7 @@ module.exports = function (grunt) {
                         'bluebird': 'components/bluebird/js/browser/bluebird',
                         'jquery': 'components/jquery/dist/jquery',
                         'lodash': 'components/lodash/lodash',
+                        'js-yaml': 'components/js-yaml/dist/js-yaml.min',
                         'marked': 'components/marked/lib/marked',
                         'qwest': 'components/qwest/qwest.min',
                         'ui': 'components/jqueryui/jquery-ui.min'

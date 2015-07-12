@@ -1,7 +1,7 @@
 
 define(['jquery', 'utils/objects', 'utils/markdown', 'utils/promise'], function (jQuery, ObjectUtil, MarkdownUtil, Promise) {
     var Article = function (element, options) {
-        var content;
+        var content, properties;
 
         if (element instanceof jQuery) {
             element = element.get();
@@ -15,7 +15,11 @@ define(['jquery', 'utils/objects', 'utils/markdown', 'utils/promise'], function 
                     page = this.getFileName();
 
                 contentRetriever.getPageContent(page).then(function (result) {
-                    content = result.content;
+                    var loaded = MarkdownUtil.parse(result.content);
+
+                    properties = loaded.properties;
+                    content = loaded.content;
+
                     deferred.resolve(content);
                 }).catch(function (err) {
                     deferred.reject(err);

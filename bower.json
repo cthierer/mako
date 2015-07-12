@@ -19,7 +19,8 @@
     "qwest": "~1.7.0",
     "jquery": "~2.1.4",
     "jqueryui": "~1.11.4",
-    "marked": "~0.3.3"
+    "marked": "~0.3.3",
+    "js-yaml": "~3.3.1"
   },
   "private": true
 }
