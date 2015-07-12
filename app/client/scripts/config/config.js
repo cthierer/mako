@@ -24,19 +24,12 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
 
     return new Config({
         "mako": {
+            "name": "Mako",
+            "repo": "https://github.com/cthierer/mako",
             "host": "http://localhost:3000",
             "endpoints": {
                 "content": "/api/contents"
-            }
-        },
-        "projects": [
-            {
-                "name": "great-white",
-                "title": "GreatWhite"
-            }
-        ],
-        "app": {
-            "name": "Mako",
+            },
             "toolbar": {
                 "toolbarTemplate": "<div class=\"mako-navbar navabar navbar-inverse navbar-fixed-bottom\">\
                     <div class=\"container-fluid\">\
@@ -45,10 +38,23 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
                                 <span class=\"mako-icon\"><%= name %></span>\
                             </span>\
                         </div>\
+                        <div class=\"collapse navbar-collapse\">\
+                            <div class=\"navbar-text navbar-right\">\
+                                <a class=\"mako-repo-link\" href=\"<%= repo %>\" target=\"_blank\">\
+                                    <img width=\"30px\" height=\"30px\" src=\"<%= host %>/client/images/GitHub-Mark-Light-32px.png\" alt=\"View source code on GitHub\"/>\
+                                </a>\
+                            </div>\
+                        </div>\
                     </div>\
                 </div>"
             }
         },
+        "projects": [
+            {
+                "name": "great-white",
+                "title": "GreatWhite"
+            }
+        ],
         "content": {
             "selectors": ["article", ".article", ".editable"]
         },

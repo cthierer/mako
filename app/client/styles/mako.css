@@ -9,6 +9,11 @@ body {
     padding-bottom: 10px;
 }
 
+.mako-navbar .navbar-text {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .mako-navbar .navbar-brand:hover {
     color: #a4a4a4;
 }
