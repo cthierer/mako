@@ -1,5 +1,5 @@
 
-define(['jquery'], function (jQuery) {
+define(['jquery', 'utils/markdown'], function (jQuery, MarkdownUtil) {
     var Article = function (element) {
         if (element instanceof jQuery) {
             element = element.get();
@@ -19,6 +19,11 @@ define(['jquery'], function (jQuery) {
 
         this.getId = function () {
             return this.getElement().id;
+        };
+
+        this.setContent = function (markdown) {
+            var html = MarkdownUtil.render(markdown);
+            this.getElement().innerHTML = html;
         };
 
         if (!element.id) {

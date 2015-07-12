@@ -52,9 +52,11 @@ define(['jquery', 'logger/logger', 'utils/objects', 'config/config', 'editor/art
     };
 
     ContentEditor.prototype.getEditor = function (content, trigger) {
+        var self = this;
         return Config.get('editor.editorTemplate').then(function (template) {
             var render = _.template(template),
-                element = $(render({ content: content }));
+                element = $(render({ content: content })),
+                form = element.find('form').get(0);
 
             function close () {
                 element.remove();
@@ -62,8 +64,12 @@ define(['jquery', 'logger/logger', 'utils/objects', 'config/config', 'editor/art
             };
 
             element.submit(function (event) {
+                var data = $(form).serializeArray(),
+                    content = _.where(data, { name: 'content' }).shift().value;
+
                 event.preventDefault();
-                console.log('form submitted');
+                self.getArticle().setContent(content);
+
                 close();
             });
 

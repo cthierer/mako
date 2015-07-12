@@ -26,7 +26,7 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
         "mako": {
             "host": "http://localhost:3000",
             "endpoints": {
-                "content": "/contents"
+                "content": "/api/contents"
             }
         },
         "projects": [

@@ -1,4 +1,4 @@
-require(['jquery', 'logger/logger', 'utils/lodash', 'editor/content_editor', 'editor/article', 'content/dummy_content_retriever', 'config/config', 'session/session', 'styles/styles'], function ($, Logger, _, ContentEditor, Article, ContentRetriever, Config, Session, Styles) {
+require(['jquery', 'logger/logger', 'utils/lodash', 'editor/content_editor', 'editor/article', 'content/content_retriever', 'config/config', 'session/session', 'styles/styles'], function ($, Logger, _, ContentEditor, Article, ContentRetriever, Config, Session, Styles) {
     var SiteLogger = Logger.get('site');
 
     function load () {
