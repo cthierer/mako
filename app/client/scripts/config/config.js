@@ -51,7 +51,8 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
                         </div>\
                     </div>\
                 </div>",
-                "loginTemplate": "<li><a href=\"#\"><%= text %></a></li>"
+                "loginTemplate": "<li><a href=\"#\"><%= text %></a></li>",
+                "userTemplate": "<li><a href=\"#\"><%= user %></a></li>",
             },
             "panel": {
                 "panelTemplate": "<div class=\"mako-panel panel panel-primary collapse\">\
@@ -62,9 +63,27 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
                         </h3>\
                     </div>\
                     <div class=\"panel-body\">\
-                        <%= body %>\
                     </div>\
-                </div>"
+                </div>",
+                "loginTemplate": "<form>\
+                    <div class=\"form-group\">\
+                        <label>\
+                            Username\
+                            <input class=\"form-control\" type=\"text\" name=\"username\" />\
+                        </label>\
+                    </div>\
+                    <div class=\"form-group\">\
+                        <label>\
+                            Personal Access Token\
+                            <input class=\"form-control\" type=\"password\" name=\"password\" />\
+                        </label>\
+                    </div>\
+                    <button type=\"submit\" class=\"btn btn-primary\">Log in</button>\
+                </div>",
+                "userTemplate": "<dl>\
+                    <dt>Username</dt><dd><%= username %></dd>\
+                    <dt>Token</dt><dd><%= token %></dd>\
+                </dl>"
             }
         },
         "projects": [

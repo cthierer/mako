@@ -12,6 +12,8 @@ define(['jquery', 'bootstrap', 'eventEmitter', 'utils/lodash', 'utils/objects', 
                     self.close();
                 });
 
+                self.setContent(options.content);
+
                 return element.get();
             });
 
@@ -23,16 +25,40 @@ define(['jquery', 'bootstrap', 'eventEmitter', 'utils/lodash', 'utils/objects', 
             });
         };
 
-        this.open = function () {
-            var self = this;
-            this.getElement().then(function (element) {
+        this.open = function (contentData) {
+            var self = this,
+                element;
+
+            if (contentData) {
+                element = this.setContent(contentData);
+            } else {
+                element = this.getElement();
+            }
+
+            element.then(function (element) {
                 $(element).collapse('show');
                 self.emit('panelOpened');
             });
         };
 
+        this.setContent = function (data) {
+            return this.getElement().then(function (element) {
+                var body = $(element).find('.panel-body');
+                body.empty();
+                body.append($(options.renderer(data)));
+                return element;
+            });
+        };
+
         this.getElement = function () {
             return element;
+        };
+
+        this.addTrigger = function (element) {
+            $(element).find('a').click(function (event) {
+                event.preventDefault();
+                self.open();
+            });
         };
     };
 
