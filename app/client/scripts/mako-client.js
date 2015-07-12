@@ -22,10 +22,10 @@ require(['jquery', 'logger/logger', 'utils/lodash', 'editor/content_editor', 'ed
         editables.addClass(config.styles.classes.editable);
 
         _.each(editables, function (editable) {
-            var article = new Article(editable),
-                editor = new ContentEditor(article, {
+            var article = new Article(editable, {
                     contentRetriever: ContentRetriever
-                });
+                }),
+                editor = new ContentEditor(article, { });
         });
     });
 });

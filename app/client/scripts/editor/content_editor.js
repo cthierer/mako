@@ -23,10 +23,6 @@ define(['jquery', 'logger/logger', 'utils/objects', 'config/config', 'editor/art
             return ObjectUtil.get(this.getOptions(), option);
         };
 
-        this.getContentRetriever = function () {
-            return this.getOption('contentRetriever');
-        };
-
         this.getToolbar = function () {
             return toolbar;
         };
@@ -38,8 +34,8 @@ define(['jquery', 'logger/logger', 'utils/objects', 'config/config', 'editor/art
                 var element = $(this);
 
                 element.prop('disabled', true);
-                self.getSourceContent().then(function (content) {
-                    self.getEditor(content.content, element).then(function (editor) {
+                self.getArticle().getContent().then(function (content) {
+                    self.getEditor(content, element).then(function (editor) {
                         toolbar.getElement().then(function (toolbar) {
                             $(toolbar).after(editor);
                         });
@@ -80,13 +76,6 @@ define(['jquery', 'logger/logger', 'utils/objects', 'config/config', 'editor/art
 
             return element.get();
         });
-    };
-
-    ContentEditor.prototype.getSourceContent = function () {
-        var page = this.getArticle().getFileName(),
-            contentRetriever = this.getContentRetriever();
-
-        return contentRetriever.getPageContent(page);
     };
 
     return ContentEditor;
