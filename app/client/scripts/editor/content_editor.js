@@ -30,12 +30,10 @@ define(['jquery', 'logger/logger', 'utils/objects', 'config/config', 'editor/art
         toolbar.getButton('Edit', {
             icon: 'edit'
         }).then(function (button) {
-            $(button).click(function () {
-                var element = $(this);
-
-                element.prop('disabled', true);
+            $(button.getElement()).click(function () {
+                button.disable();
                 self.getArticle().getContent().then(function (content) {
-                    self.getEditor(content, element).then(function (editor) {
+                    self.getEditor(content, button).then(function (editor) {
                         toolbar.getElement().then(function (toolbar) {
                             $(toolbar).after(editor);
                         });
@@ -47,7 +45,7 @@ define(['jquery', 'logger/logger', 'utils/objects', 'config/config', 'editor/art
         });
     };
 
-    ContentEditor.prototype.getEditor = function (content, trigger) {
+    ContentEditor.prototype.getEditor = function (content, button) {
         var self = this;
         return Config.get('editor.editorTemplate').then(function (template) {
             var render = _.template(template),
@@ -56,7 +54,7 @@ define(['jquery', 'logger/logger', 'utils/objects', 'config/config', 'editor/art
 
             function close () {
                 element.remove();
-                $(trigger).prop('disabled', false);
+                button.enable();
             };
 
             element.submit(function (event) {

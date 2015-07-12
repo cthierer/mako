@@ -1,7 +1,7 @@
 
 define(['jquery', 'utils/objects', 'utils/markdown', 'utils/promise'], function (jQuery, ObjectUtil, MarkdownUtil, Promise) {
     var Article = function (element, options) {
-        var content, properties;
+        var loaded, content, properties;
 
         if (element instanceof jQuery) {
             element = element.get();
@@ -15,7 +15,7 @@ define(['jquery', 'utils/objects', 'utils/markdown', 'utils/promise'], function 
                     page = this.getFileName();
 
                 contentRetriever.getPageContent(page).then(function (result) {
-                    var loaded = MarkdownUtil.parse(result.content);
+                    loaded = MarkdownUtil.parse(result.content);
 
                     properties = loaded.properties;
                     content = loaded.content;
@@ -57,6 +57,10 @@ define(['jquery', 'utils/objects', 'utils/markdown', 'utils/promise'], function 
 
         this.getOption = function (option) {
             return ObjectUtil.get(this.getOptions(), option);
+        };
+
+        this.hasChanged = function () {
+            return loaded.content !== content;
         };
 
         this.setContent = function (markdown) {

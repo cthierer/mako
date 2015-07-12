@@ -27,14 +27,26 @@ define(["jquery", "utils/lodash", "utils/objects", "config/config"], function ($
         options.article = this.getArticle();
 
         return Config.get("editor.toolbar").then(function (toolbar) {
-            var render = _.template(toolbar.buttonTemplate);
-            return $(render(options)).get();
+            var render = _.template(toolbar.buttonTemplate),
+                element = $(render(options));
+
+            return {
+                disable: function () {
+                    element.prop('disabled', true);
+                },
+                enable: function () {
+                    element.prop('disabled', false);
+                },
+                getElement: function () {
+                    return element.get();
+                }
+            };
         });
     };
 
     Toolbar.prototype.addButton = function (button) {
         this.getElement().then(function (element) {
-            $(element).append(button);
+            $(element).append(button.getElement());
         });
     };
 
