@@ -3,6 +3,23 @@ body {
     padding-bottom: 70px;
 }
 
+.mako-panel {
+    background-color: #f8f8f8;
+    border-radius: 0;
+    bottom: 50px;
+    margin-bottom: 0;
+    position: fixed;
+    width: 100%;
+}
+
+.mako-panel .panel-heading {
+    border-radius: 0;
+}
+
+.mako-panel .panel-body {
+    height: 250px;
+}
+
 .mako-navbar .navbar-brand {
     color: #a4a4a4;
     padding-top: 10px;
@@ -12,6 +29,11 @@ body {
 .mako-navbar .navbar-text {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.mako-navbar .mako-repo-link {
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .mako-navbar .navbar-brand:hover {

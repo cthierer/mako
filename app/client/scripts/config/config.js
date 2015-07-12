@@ -38,13 +38,31 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
                                 <span class=\"mako-icon\"><%= name %></span>\
                             </span>\
                         </div>\
-                        <div class=\"collapse navbar-collapse\">\
-                            <div class=\"navbar-text navbar-right\">\
-                                <a class=\"mako-repo-link\" href=\"<%= repo %>\" target=\"_blank\">\
-                                    <img width=\"30px\" height=\"30px\" src=\"<%= host %>/client/images/GitHub-Mark-Light-32px.png\" alt=\"View source code on GitHub\"/>\
+                        <div id=\"mako-app-toolbar\" class=\"collapse navbar-collapse\">\
+                            <ul id=\"mako-app-toolbar-main\" class=\"nav navbar-nav\">\
+                            </ul>\
+                            <div class=\"navbar-text navbar-right mako-repo-link\">\
+                                <a href=\"<%= repo %>\" target=\"_blank\">\
+                                    <img width=\"20px\" height=\"20px\" src=\"<%= host %>/client/images/GitHub-Mark-Light-32px.png\" alt=\"View source code on GitHub\"/>\
                                 </a>\
                             </div>\
+                            <ul id=\"mako-app-toolbar-secondary\" class=\"nav navbar-nav navbar-right\">\
+                            </ul>\
                         </div>\
+                    </div>\
+                </div>",
+                "loginTemplate": "<li><a href=\"#\"><%= text %></a></li>"
+            },
+            "panel": {
+                "panelTemplate": "<div class=\"mako-panel panel panel-primary collapse\">\
+                    <div class=\"panel-heading\">\
+                        <h3 class=\"panel-title\">\
+                            <%= title %>\
+                            <a href=\"#\" class=\"close\">&times;</a>\
+                        </h3>\
+                    </div>\
+                    <div class=\"panel-body\">\
+                        <%= body %>\
                     </div>\
                 </div>"
             }
