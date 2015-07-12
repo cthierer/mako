@@ -1,4 +1,4 @@
-require(['jquery', 'logger/logger', 'utils/lodash', 'editor/content_editor', 'editor/article', 'content/content_retriever', 'config/config', 'session/session', 'styles/styles'], function ($, Logger, _, ContentEditor, Article, ContentRetriever, Config, Session, Styles) {
+require(['jquery', 'logger/logger', 'utils/lodash', 'editor/content_editor', 'editor/article', 'content/content_retriever', 'config/config', 'session/session', 'styles/styles', 'app/toolbar'], function ($, Logger, _, ContentEditor, Article, ContentRetriever, Config, Session, Styles, AppToolbar) {
     var SiteLogger = Logger.get('site');
 
     function load () {
@@ -11,7 +11,8 @@ require(['jquery', 'logger/logger', 'utils/lodash', 'editor/content_editor', 'ed
 
     load().then(function (config) {
         var editableSelectors = config.content.selectors.join(','),
-            editables = $(editableSelectors);
+            editables = $(editableSelectors),
+            toolbar = new AppToolbar();
 
         SiteLogger.debug('Editable region selectors:', editableSelectors);
 

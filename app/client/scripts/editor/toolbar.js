@@ -1,7 +1,7 @@
 
 define(["jquery", "utils/lodash", "utils/objects", "config/config"], function ($, _, ObjectUtil, Config) {
     var Toolbar = function (article) {
-        element = Config.get("editor.toolbar").then(function (toolbar) {
+        var element = Config.get("editor.toolbar").then(function (toolbar) {
             var render = _.template(toolbar.toolbarTemplate);
             return $(render({ buttons: [] })).get();
         });

@@ -35,6 +35,20 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
                 "title": "GreatWhite"
             }
         ],
+        "app": {
+            "name": "Mako",
+            "toolbar": {
+                "toolbarTemplate": "<div class=\"mako-navbar navabar navbar-default\">\
+                    <div class=\"container-fluid\">\
+                        <div class=\"navbar-header\">\
+                            <span class=\"navbar-brand\">\
+                                <span class=\"mako-icon\"><%= name %></span>\
+                            </span>\
+                        </div>\
+                    </div>\
+                </div>"
+            }
+        },
         "content": {
             "selectors": ["article", ".article", ".editable"]
         },
@@ -45,10 +59,32 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
             }
         },
         "editor": {
-            "editorTemplate": "<div class=\"mako-edit\"><form class=\"mako-form\"><div class=\"form-group\"><label>Content<textarea class=\"form-control mako-md-editor\" name=\"content\"><%= content %></textarea></label></div><div class=\"mako-toolbar btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-default\" data-action=\"close\">Close</button><button type=\"submit\" class=\"btn btn-primary\">Preview</button></div></form></div>",
+            "editorTemplate": "<div class=\"mako-edit\">\
+                <form class=\"mako-form\">\
+                    <div class=\"form-group\">\
+                        <label>\
+                            Content\
+                            <textarea class=\"form-control mako-md-editor\" name=\"content\"><%= content %></textarea>\
+                        </label>\
+                    </div>\
+                    <div class=\"mako-toolbar btn-group\" role=\"group\">\
+                        <button type=\"button\" class=\"btn btn-default\" data-action=\"close\">Close</button>\
+                        <button type=\"submit\" class=\"btn btn-primary\">Preview</button>\
+                    </div>\
+                </form>\
+            </div>",
             "toolbar": {
-                "toolbarTemplate": "<div class=\"mako-toolbar btn-group\" role=\"group\"><% _.each(buttons, function (button) { %><%= button.render(button) %><% }) %></div>",
-                "buttonTemplate": "<button type=\"button\" class=\"btn btn-default\" data-article=\"<%= article.getId() %>\"><% if (icon) { %><span class=\"glyphicon glyphicon-<%= icon %>\" aria-hidden=\"true\"></span><% } %><%= label %></button>"
+                "toolbarTemplate": "<div class=\"mako-toolbar btn-group\" role=\"group\">\
+                    <% _.each(buttons, function (button) { %>\
+                        <%= button.render(button) %>\
+                    <% }) %>\
+                </div>",
+                "buttonTemplate": "<button type=\"button\" class=\"btn btn-default\" data-article=\"<%= article.getId() %>\">\
+                    <% if (icon) { %>\
+                        <span class=\"glyphicon glyphicon-<%= icon %>\" aria-hidden=\"true\"></span>\
+                    <% } %>\
+                    <%= label %>\
+                </button>"
             }
         }
     });
