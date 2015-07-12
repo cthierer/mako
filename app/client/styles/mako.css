@@ -1,11 +1,28 @@
 
-.gw-editable:hover {
-    margin: -1px;
-    border: 1px solid transparent;
+.mako-toolbar {
+    background-color: #f8f8f8;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+    margin-top: 20px;
+    padding: 8px;
+    width: 100%;
 }
 
-.gw-editable:hover {
-    background-color: #e6e6e6;
-    border: 1px solid #045fb4;
-    cursor: pointer;
+.mako-edit {
+    background-color: #f8f8f8;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+    margin-top: 20px;
+    padding: 8px;
+}
+
+.mako-edit .mako-form .mako-toolbar {
+    background-color: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mako-edit .mako-form .form-group label {
+    width: 100%;
 }

@@ -15,7 +15,8 @@ module.exports = function (grunt) {
                         'bluebird': 'components/bluebird/js/browser/bluebird',
                         'jquery': 'components/jquery/dist/jquery',
                         'lodash': 'components/lodash/lodash',
-                        'qwest': 'components/qwest/qwest.min'
+                        'qwest': 'components/qwest/qwest.min',
+                        'ui': 'components/jqueryui/jquery-ui.min'
                     },
                     out: 'app/client/mako.min.js'
                 }

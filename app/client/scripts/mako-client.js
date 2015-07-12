@@ -21,15 +21,11 @@ require(['jquery', 'logger/logger', 'utils/lodash', 'editor/content_editor', 'ed
 
         editables.addClass(config.styles.classes.editable);
 
-        editables.click(function () {
-            var article = new Article(this),
+        _.each(editables, function (editable) {
+            var article = new Article(editable),
                 editor = new ContentEditor(article, {
                     contentRetriever: ContentRetriever
                 });
-
-            editor.getSourceContent().then(function (result) {
-                SiteLogger.debug('Retrieved result:', result);
-            });
         });
     });
 });

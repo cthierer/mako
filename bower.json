@@ -17,7 +17,8 @@
     "bluebird": "~2.9.33",
     "lodash": "~3.10.0",
     "qwest": "~1.7.0",
-    "jquery": "~2.1.4"
+    "jquery": "~2.1.4",
+    "jqueryui": "~1.11.4"
   },
   "private": true
 }

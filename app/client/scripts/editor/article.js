@@ -16,6 +16,14 @@ define(['jquery'], function (jQuery) {
         this.getFileName = function () {
             return this.getDataAttribute('file');
         };
+
+        this.getId = function () {
+            return this.getElement().id;
+        };
+
+        if (!element.id) {
+            element.id = 'article-' + this.getFileName();
+        }
     };
 
     return Article;
