@@ -13,6 +13,7 @@ module.exports = function (grunt) {
                     name: 'mako-client',
                     paths: {
                         'bluebird': 'components/bluebird/js/browser/bluebird',
+                        'eventEmitter': 'components/eventemitter2/lib/eventemitter2',
                         'jquery': 'components/jquery/dist/jquery',
                         'lodash': 'components/lodash/lodash',
                         'js-yaml': 'components/js-yaml/dist/js-yaml.min',

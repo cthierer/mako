@@ -10,6 +10,31 @@ define(['utils/lodash'], function (_) {
 
             return object;
         },
+        inherits: function (child, superClass) {
+            if (typeof Object.create === 'function') {
+                // implementation from standard node.js 'util' module
+                (function (ctor, superCtor) {
+                    ctor.super_ = superCtor
+                    ctor.prototype = Object.create(superCtor.prototype, {
+                        constructor: {
+                            value: ctor,
+                            enumerable: false,
+                            writable: true,
+                            configurable: true
+                        }
+                    });
+                })(child, superClass);
+            } else {
+                // old school shim for old browsers
+                (function (ctor, superCtor) {
+                    ctor.super_ = superCtor
+                    var TempCtor = function () {}
+                    TempCtor.prototype = superCtor.prototype
+                    ctor.prototype = new TempCtor()
+                    ctor.prototype.constructor = ctor
+                })(child, superClass);
+            }
+        },
         get: function (object, path) {
             var i = 0,
                 value = object,

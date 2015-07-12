@@ -1,5 +1,5 @@
 
-define(['jquery', 'utils/objects', 'utils/markdown', 'utils/promise'], function (jQuery, ObjectUtil, MarkdownUtil, Promise) {
+define(['jquery', 'eventEmitter', 'utils/objects', 'utils/markdown', 'utils/promise'], function (jQuery, EventEmitter, ObjectUtil, MarkdownUtil, Promise) {
     var Article = function (element, options) {
         var loaded, content, properties;
 
@@ -60,20 +60,27 @@ define(['jquery', 'utils/objects', 'utils/markdown', 'utils/promise'], function 
         };
 
         this.hasChanged = function () {
-            return loaded.content !== content;
+            return loaded.content != content;
         };
 
         this.setContent = function (markdown) {
-            var html = MarkdownUtil.render(markdown);
+            var html = MarkdownUtil.render(markdown),
+                changed = content != markdown;
 
             content = markdown;
             this.getElement().innerHTML = html;
+
+            this.emit('contentSet', changed);
         };
 
         if (!element.id) {
             element.id = 'article-' + this.getFileName();
         }
+
+        EventEmitter.call(this);
     };
+
+    ObjectUtil.inherits(Article, EventEmitter);
 
     return Article;
 });
