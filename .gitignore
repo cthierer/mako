@@ -1,1 +1,4 @@
 node_modules
+
+app/client/mako.min.js
+app/client/scripts/components

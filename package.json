@@ -15,5 +15,11 @@
     "github": "^0.2.4",
     "lodash": "^3.10.0",
     "morgan": "~1.6.1"
+  },
+  "devDependencies": {
+    "bower": "^1.4.1",
+    "grunt": "^0.4.5",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "load-grunt-tasks": "^3.2.0"
   }
 }

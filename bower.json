@@ -1,0 +1,23 @@
+{
+  "name": "mako",
+  "version": "0.0.0",
+  "authors": [
+    "Chris Thierer <cthierer1@gmail.com>"
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "bluebird": "~2.9.33",
+    "lodash": "~3.10.0",
+    "qwest": "~1.7.0",
+    "jquery": "~2.1.4"
+  },
+  "private": true
+}

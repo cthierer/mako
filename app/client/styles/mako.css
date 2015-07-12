@@ -1,0 +1,11 @@
+
+.gw-editable:hover {
+    margin: -1px;
+    border: 1px solid transparent;
+}
+
+.gw-editable:hover {
+    background-color: #e6e6e6;
+    border: 1px solid #045fb4;
+    cursor: pointer;
+}
