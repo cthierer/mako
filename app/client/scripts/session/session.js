@@ -39,5 +39,18 @@ define(['logger/logger', 'utils/lodash', 'utils/objects', 'utils/promise'], func
         return deferred.promise;
     };
 
+    Session.prototype.has = function (property, value) {
+        var deferred = Promise.pending(),
+            result = ObjectUtil.get(this.data, property);
+
+        deferred.resolve(!_.isUndefined(result) && !_.isNull(result));
+
+        return deferred.promise;
+    };
+
+    Session.prototype.isAuthenticated = function () {
+        return this.has('user');
+    };
+
     return new Session();
 });
