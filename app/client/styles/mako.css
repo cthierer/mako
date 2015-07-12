@@ -1,9 +1,6 @@
 
-.mako-navbar {
-    background-color: #2e2e2e;
-    border: 1px solid #1c1c1c;
-    border-radius: none;
-    margin-bottom: 8px;
+body {
+    padding-bottom: 70px;
 }
 
 .mako-navbar .navbar-brand {

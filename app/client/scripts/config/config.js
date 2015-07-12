@@ -38,7 +38,7 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
         "app": {
             "name": "Mako",
             "toolbar": {
-                "toolbarTemplate": "<div class=\"mako-navbar navabar navbar-default\">\
+                "toolbarTemplate": "<div class=\"mako-navbar navabar navbar-inverse navbar-fixed-bottom\">\
                     <div class=\"container-fluid\">\
                         <div class=\"navbar-header\">\
                             <span class=\"navbar-brand\">\
