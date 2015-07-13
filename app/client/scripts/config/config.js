@@ -96,7 +96,7 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
             "selectors": ["article", ".article", ".editable"]
         },
         "styles": {
-            "stylesheets": ["//localhost:3000/client/styles/mako.css"],
+            "stylesheets": ["<%= host %>/client/styles/mako.css"],
             "classes": {
                 "editable": "mako-editable"
             }
