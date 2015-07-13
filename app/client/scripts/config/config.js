@@ -96,7 +96,7 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
             "selectors": ["article", ".article", ".editable"]
         },
         "styles": {
-            "stylesheets": ["client/styles/mako.css"],
+            "stylesheets": ["https://floating-wave-3756.herokuapp.com/client/styles/mako.css"],
             "classes": {
                 "editable": "mako-editable"
             }
