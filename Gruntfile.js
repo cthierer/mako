@@ -6,6 +6,16 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
 
+        bower: {
+            install: {
+                options: {
+                    targetDir: './client/scripts/components',
+                    cleanTargetDir: true,
+                    copy: false
+                }
+            }
+        },
+
         requirejs: {
             compile: {
                 options: {
@@ -29,7 +39,7 @@ module.exports = function (grunt) {
 
     });
 
-    grunt.registerTask('build', ['requirejs']);
+    grunt.registerTask('build', ['bower:install', 'requirejs']);
 
     grunt.registerTask('heroku:production', ['build']);
 
