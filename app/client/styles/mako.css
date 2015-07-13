@@ -57,7 +57,6 @@ body {
 .mako-toolbar {
     background-color: #f8f8f8;
     border: 1px solid #e7e7e7;
-    border-radius: 4px;
     margin-top: 20px;
     padding: 8px;
     width: 100%;
@@ -65,10 +64,15 @@ body {
 
 .mako-edit {
     background-color: #f8f8f8;
-    border: 1px solid #e7e7e7;
-    border-radius: 4px;
-    margin-top: 20px;
+    border-left: 1px solid #e7e7e7;
+    border-right: 1px solid #e7e7e7;
+    border-bottom: 15px solid #428bca;
+    box-sizing: content-box;
     padding: 8px;
+}
+
+.mako-edit textarea {
+    height: 250px;
 }
 
 .mako-edit .mako-form .mako-toolbar {

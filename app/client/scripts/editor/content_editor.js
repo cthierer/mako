@@ -100,11 +100,14 @@ define(['jquery', 'eventEmitter', 'logger/logger', 'utils/objects', 'config/conf
                 });
 
                 toolbar.getElement().then(function (toolbar) {
+                    element.collapse();
                     $(toolbar).after(element.get());
+                    element.collapse('show');
                 });
 
                 this.close = function () {
-                    element.remove();
+                    element.collapse('hide');
+                    setTimeout(function () { element.remove(); }, 1000);
                     self.emit('closeEditor');
                 };
 

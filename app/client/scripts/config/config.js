@@ -102,7 +102,7 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
             }
         },
         "editor": {
-            "editorTemplate": "<div class=\"mako-edit\">\
+            "editorTemplate": "<div class=\"mako-edit collapse\">\
                 <form class=\"mako-form\">\
                     <div class=\"form-group\">\
                         <label>\
