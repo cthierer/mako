@@ -13,6 +13,37 @@ var GitHubDataService = function () {
         headers:    config.headers      || {}
     });
 
+    this.updateFileContent = function (owner, repo, branch, path, content, options) {
+        var deferred = Promise.pending(),
+            params = {};
+
+        params.user = owner;
+        params.repo = repo;
+        params.ref = branch;
+        params.path = path;
+        params.content = (new Buffer(content)).toString('base64');
+
+        params.message = options.message;
+        params.sha = options.sha;
+
+        api.authenticate({
+            type: 'basic',
+            username: options.user.username,
+            password: options.user.token
+        });
+
+        api.repos.updateFile(params, function (err, result) {
+            if (err) {
+                deferred.reject(err);
+                return;
+            }
+
+            deferred.resolve(result);
+        });
+
+        return deferred.promise;
+    };
+
     this.getFileContent = function (owner, repo, branch, path) {
         var deferred = Promise.pending(),
             params = {};
@@ -35,8 +66,10 @@ var GitHubDataService = function () {
                 return;
             }
 
-            contentBuffer = new Buffer(result.content, result.encoding);
-            deferred.resolve(contentBuffer.toString());
+            result.content = (new Buffer(result.content, result.encoding)).toString();
+            result.encoding = "utf-8";
+
+            deferred.resolve(result);
         });
 
         return deferred.promise;

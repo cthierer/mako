@@ -39,4 +39,21 @@ ContentService.prototype.getContent = function (project, name, options) {
     });
 };
 
+ContentService.prototype.updateContent = function (project, name, content, options) {
+    if (!_.isObject(options)) {
+        options = {};
+    }
+
+    return this.getProjectConfiguration(project).then(function (config) {
+        var contentPath;
+
+        _.defaults(options, config);
+
+        contentPath = path.posix.join(options.path_to_content, name);
+
+        return dataService.updateFileContent(options.owner, options.repo,
+            options.branch, contentPath, content, options);
+    });
+}
+
 module.exports = new ContentService();
