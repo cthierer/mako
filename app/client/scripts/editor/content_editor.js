@@ -54,9 +54,7 @@ define(['jquery', 'eventEmitter', 'logger/logger', 'utils/objects', 'config/conf
             });
 
             $(button.getElement()).click(function () {
-                self.getArticle().save({
-                    message: 'Testing save functionality'
-                }).then(function (result) {
+                self.getArticle().save({}).then(function (result) {
                     button.disable();
                 });
             });
@@ -79,10 +77,12 @@ define(['jquery', 'eventEmitter', 'logger/logger', 'utils/objects', 'config/conf
 
                     form.submit(function (event) {
                         var data = form.serializeArray(),
-                            content = _.where(data, { name: 'content' }).shift().value;
+                            content = _.where(data, { name: 'content' }).shift().value,
+                            message = _.where(data, { name: 'message' }).shift().value;
 
                         event.preventDefault();
                         article.setContent(content);
+                        article.setMessage(message);
                         self.emit('setContent');
                         self.close();
                     });

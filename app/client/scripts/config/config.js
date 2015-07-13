@@ -110,6 +110,12 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
                             <textarea class=\"form-control mako-md-editor\" name=\"content\"><%= content %></textarea>\
                         </label>\
                     </div>\
+                    <div class=\"form-group\">\
+                        <label>\
+                            Commit message\
+                            <input required class=\"form-control\" name=\"message\" type=\"text\" />\
+                        </label>\
+                    </div>\
                     <div class=\"mako-toolbar btn-group\" role=\"group\">\
                         <button type=\"button\" class=\"btn btn-default\" data-action=\"close\">Close</button>\
                         <button type=\"submit\" class=\"btn btn-primary\">Preview</button>\

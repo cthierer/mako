@@ -1,7 +1,7 @@
 
 define(['jquery', 'eventEmitter', 'utils/objects', 'utils/markdown', 'utils/promise', 'session/session'], function (jQuery, EventEmitter, ObjectUtil, MarkdownUtil, Promise, Session) {
     var Article = function (element, options) {
-        var loaded, content, properties, meta = {};
+        var loaded, content, properties, message, meta = {};
 
         if (element instanceof jQuery) {
             element = element.get();
@@ -77,6 +77,12 @@ define(['jquery', 'eventEmitter', 'utils/objects', 'utils/markdown', 'utils/prom
             return deferred.promise;
         };
 
+        this.getMessage = function () {
+            var deferred = Promise.pending();
+            deferred.resolve(message);
+            return deferred.promise;
+        };
+
         this.hasChanged = function () {
             return loaded.content != content;
         };
@@ -91,6 +97,10 @@ define(['jquery', 'eventEmitter', 'utils/objects', 'utils/markdown', 'utils/prom
             this.emit('contentSet', changed);
         };
 
+        this.setMessage = function (newMessage) {
+            message = newMessage;
+        };
+
         this.save = function (options) {
             var contentUpdater = this.getContentUpdater(),
                 page = this.getFileName();
@@ -103,17 +113,19 @@ define(['jquery', 'eventEmitter', 'utils/objects', 'utils/markdown', 'utils/prom
                 this.getContent(),
                 this.getDocumentProperties(),
                 this.getMetaProperties(),
-                Session.get('user')
+                Session.get('user'),
+                this.getMessage()
             ]).then(function (results) {
                 var content = results[0],
                     frontMatter = results[1],
                     meta = results[2],
                     user = results[3],
+                    message = results[4],
                     mdDoc = MarkdownUtil.toDocument(content, frontMatter);
 
                 return contentUpdater.saveContent(page, mdDoc, {
                     sha: meta.sha,
-                    message: options.message,
+                    message: message,
                     user: user
                 });
             });
