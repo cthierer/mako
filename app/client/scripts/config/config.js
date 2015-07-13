@@ -26,7 +26,7 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
         "mako": {
             "name": "Mako",
             "repo": "https://github.com/cthierer/mako",
-            "host": "http://localhost:3000",
+            "host": "https://floating-wave-3756.herokuapp.com",
             "endpoints": {
                 "content": "/api/contents"
             },
