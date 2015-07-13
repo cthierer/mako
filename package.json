@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "grunt build && node ./bin/www"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "bluebird": "^2.9.33",
