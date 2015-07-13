@@ -113,7 +113,7 @@ define(['utils/lodash', 'utils/objects', 'utils/promise'], function (_, ObjectUt
                     <div class=\"form-group\">\
                         <label>\
                             Commit message\
-                            <input required class=\"form-control\" name=\"message\" type=\"text\" />\
+                            <input required class=\"form-control\" name=\"message\" type=\"text\" value=\"<%= message %>\"/>\
                         </label>\
                     </div>\
                     <div class=\"mako-toolbar btn-group\" role=\"group\">\

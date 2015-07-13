@@ -67,49 +67,55 @@ define(['jquery', 'eventEmitter', 'logger/logger', 'utils/objects', 'config/conf
         var article = this.getArticle(),
             toolbar = this.getToolbar();
 
-        return Config.get('editor.editorTemplate').then(function (template) {
-            return article.getContent().then(function (content) {
-                var Editor = function (content) {
-                    var render = _.template(template),
-                        element = $(render({ content: content })),
-                        form = $(element.find('form').get(0)),
-                        self = this;
+        return Promise.all([
+            Config.get('editor.editorTemplate'),
+            article.getContent(),
+            article.getMessage()
+        ]).then(function (results) {
+            var template = results[0],
+                content = results[1],
+                message = results[2];
 
-                    form.submit(function (event) {
-                        var data = form.serializeArray(),
-                            content = _.where(data, { name: 'content' }).shift().value,
-                            message = _.where(data, { name: 'message' }).shift().value;
+            var Editor = function (content) {
+                var render = _.template(template),
+                    element = $(render({ content: content, message: message })),
+                    form = $(element.find('form').get(0)),
+                    self = this;
 
-                        event.preventDefault();
-                        article.setContent(content);
-                        article.setMessage(message);
-                        self.emit('setContent');
-                        self.close();
-                    });
+                form.submit(function (event) {
+                    var data = form.serializeArray(),
+                        content = _.where(data, { name: 'content' }).shift().value,
+                        message = _.where(data, { name: 'message' }).shift().value;
 
-                    element.find('button[data-action="close"]').click(function (event) {
-                        event.preventDefault();
-                        self.close();
-                    });
+                    event.preventDefault();
+                    article.setContent(content);
+                    article.setMessage(message);
+                    self.emit('setContent');
+                    self.close();
+                });
 
-                    toolbar.getElement().then(function (toolbar) {
-                        $(toolbar).after(element.get());
-                    });
+                element.find('button[data-action="close"]').click(function (event) {
+                    event.preventDefault();
+                    self.close();
+                });
 
-                    this.close = function () {
-                        element.remove();
-                        self.emit('closeEditor');
-                    };
+                toolbar.getElement().then(function (toolbar) {
+                    $(toolbar).after(element.get());
+                });
 
-                    this.getElement = function () {
-                        return element;
-                    };
+                this.close = function () {
+                    element.remove();
+                    self.emit('closeEditor');
                 };
 
-                ObjectUtil.inherits(Editor, EventEmitter);
+                this.getElement = function () {
+                    return element;
+                };
+            };
 
-                return new Editor(content);
-            });
+            ObjectUtil.inherits(Editor, EventEmitter);
+
+            return new Editor(content);
         });
     };
 
