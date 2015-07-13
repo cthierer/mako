@@ -31,6 +31,21 @@ define(['marked', 'js-yaml'], function (marked, yaml) {
             }
 
             return result;
+        },
+        toDocument: function (markdown, frontMatter) {
+            var doc = '',
+                fmBoundary = "---\n";
+
+            if (frontMatter) {
+                doc += fmBoundary;
+                doc += yaml.safeDump(frontMatter);
+                doc += fmBoundary;
+                doc += "\n";
+            }
+
+            doc += markdown;
+
+            return doc;
         }
     };
 });

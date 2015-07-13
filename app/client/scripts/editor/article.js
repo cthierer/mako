@@ -1,7 +1,7 @@
 
-define(['jquery', 'eventEmitter', 'utils/objects', 'utils/markdown', 'utils/promise'], function (jQuery, EventEmitter, ObjectUtil, MarkdownUtil, Promise) {
+define(['jquery', 'eventEmitter', 'utils/objects', 'utils/markdown', 'utils/promise', 'session/session'], function (jQuery, EventEmitter, ObjectUtil, MarkdownUtil, Promise, Session) {
     var Article = function (element, options) {
-        var loaded, content, properties;
+        var loaded, content, properties, meta = {};
 
         if (element instanceof jQuery) {
             element = element.get();
@@ -20,6 +20,8 @@ define(['jquery', 'eventEmitter', 'utils/objects', 'utils/markdown', 'utils/prom
                     properties = loaded.properties;
                     content = loaded.content;
 
+                    meta.sha = result.sha;
+
                     deferred.resolve(content);
                 }).catch(function (err) {
                     deferred.reject(err);
@@ -33,6 +35,10 @@ define(['jquery', 'eventEmitter', 'utils/objects', 'utils/markdown', 'utils/prom
 
         this.getContentRetriever = function () {
             return this.getOption('contentRetriever');
+        };
+
+        this.getContentUpdater = function () {
+            return this.getOption('contentUpdater');
         };
 
         this.getDataAttribute = function (name) {
@@ -59,6 +65,18 @@ define(['jquery', 'eventEmitter', 'utils/objects', 'utils/markdown', 'utils/prom
             return ObjectUtil.get(this.getOptions(), option);
         };
 
+        this.getDocumentProperties = function () {
+            var deferred = Promise.pending();
+            deferred.resolve(properties);
+            return deferred.promise;
+        };
+
+        this.getMetaProperties = function () {
+            var deferred = Promise.pending();
+            deferred.resolve(meta);
+            return deferred.promise;
+        };
+
         this.hasChanged = function () {
             return loaded.content != content;
         };
@@ -71,6 +89,34 @@ define(['jquery', 'eventEmitter', 'utils/objects', 'utils/markdown', 'utils/prom
             this.getElement().innerHTML = html;
 
             this.emit('contentSet', changed);
+        };
+
+        this.save = function (options) {
+            var contentUpdater = this.getContentUpdater(),
+                page = this.getFileName();
+
+            if (!options) {
+                options = {};
+            }
+
+            return Promise.all([
+                this.getContent(),
+                this.getDocumentProperties(),
+                this.getMetaProperties(),
+                Session.get('user')
+            ]).then(function (results) {
+                var content = results[0],
+                    frontMatter = results[1],
+                    meta = results[2],
+                    user = results[3],
+                    mdDoc = MarkdownUtil.toDocument(content, frontMatter);
+
+                return contentUpdater.saveContent(page, mdDoc, {
+                    sha: meta.sha,
+                    message: options.message,
+                    user: user
+                });
+            });
         };
 
         if (!element.id) {

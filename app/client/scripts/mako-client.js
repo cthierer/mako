@@ -1,4 +1,4 @@
-require(['jquery', 'logger/logger', 'utils/lodash', 'editor/content_editor', 'editor/article', 'content/content_retriever', 'config/config', 'session/session', 'styles/styles', 'app/toolbar'], function ($, Logger, _, ContentEditor, Article, ContentRetriever, Config, Session, Styles, AppToolbar) {
+require(['jquery', 'logger/logger', 'utils/lodash', 'editor/content_editor', 'editor/article', 'content/content_retriever', 'content/content_updater', 'config/config', 'session/session', 'styles/styles', 'app/toolbar'], function ($, Logger, _, ContentEditor, Article, ContentRetriever, ContentUpdater, Config, Session, Styles, AppToolbar) {
     var SiteLogger = Logger.get('site');
 
     function load () {
@@ -24,7 +24,8 @@ require(['jquery', 'logger/logger', 'utils/lodash', 'editor/content_editor', 'ed
 
         _.each(editables, function (editable) {
             var article = new Article(editable, {
-                    contentRetriever: ContentRetriever
+                    contentRetriever: ContentRetriever,
+                    contentUpdater: ContentUpdater
                 }),
                 editor = new ContentEditor(article, { });
         });

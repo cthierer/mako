@@ -54,9 +54,11 @@ define(['jquery', 'eventEmitter', 'logger/logger', 'utils/objects', 'config/conf
             });
 
             $(button.getElement()).click(function () {
-                button.disable();
-                // TODO save
-                console.log('saving...');
+                self.getArticle().save({
+                    message: 'Testing save functionality'
+                }).then(function (result) {
+                    button.disable();
+                });
             });
 
             toolbar.addButton(button);
