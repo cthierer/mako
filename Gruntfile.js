@@ -9,10 +9,10 @@ module.exports = function (grunt) {
         bower: {
             install: {
                 options: {
-                    targetDir: './client/scripts/components',
+                    targetDir: './app/client/scripts/components',
                     install: true,
                     cleanTargetDir: true,
-                    copy: true,
+                    copy: false,
                     verbose: true
                 }
             }
