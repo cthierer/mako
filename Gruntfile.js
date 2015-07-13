@@ -10,8 +10,10 @@ module.exports = function (grunt) {
             install: {
                 options: {
                     targetDir: './client/scripts/components',
+                    install: true,
                     cleanTargetDir: true,
-                    copy: false
+                    copy: true,
+                    verbose: true
                 }
             }
         },
