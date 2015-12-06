@@ -1,8 +1,2 @@
-node_modules
-
 *.log
-
-config/local.json
-
-app/client/mako.min.js
-app/client/scripts/components
+/node_modules

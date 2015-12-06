@@ -1,15 +1,5 @@
 {
-    "github": {
-        "debug": true
-    },
-    "contents": {
-        "projects": {
-            "great-white": {
-                "repo": "great-white",
-                "owner": "cthierer",
-                "branch": "master",
-                "path_to_content": "src/content/"
-            }
-        }
+    "server": {
+        "port": 4000
     }
 }
