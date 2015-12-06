@@ -7,6 +7,7 @@ var _ = require('lodash'),
     assert = require('assert');
 
 /**
+ * Provides a mechanism to manage multiple Authenticators.
  * @class
  */
 var AuthenticationFactory = function () {
