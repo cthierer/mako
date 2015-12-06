@@ -14,14 +14,18 @@ var AuthenticationFactory = function () {
     }
 
     function getAuthenticator (name) {
-        assert(_.isString(name), 'name must be a string');
-        assert(_.has(authenticators, name), 'authenticator must exist');
-
+        assert(hasAuthenticator(name), 'authenticator must exist');
         return authenticators[name];
+    }
+
+    function hasAuthenticator (name) {
+        assert(_.isString(name), 'name must be a string');
+        return _.has(authenticators, name);
     }
 
     this.add = addAuthenticator;
     this.get = getAuthenticator;
+    this.has = hasAuthenticator;
 };
 
 module.exports = new AuthenticationFactory();

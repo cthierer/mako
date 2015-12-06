@@ -55,4 +55,25 @@ describe('authentication factory', function () {
         });
     });
 
+    describe('checking for authenticator', function () {
+        var name;
+
+        beforeEach(function () {
+            name = 'testAuthenticator';
+            authenticationFactory.add(name, { authenticate: function () {} });
+        });
+
+        it('returns true when authenticator exists', function () {
+            expect(authenticationFactory.has(name)).to.be.true;
+        });
+
+        it('returns false when authenticator does not exist', function () {
+            expect(authenticationFactory.has('jibjab')).to.be.false;
+        });
+
+        it('throws an error when name is not a string', function () {
+            var hasFn = authenticationFactory.has.bind(authenticationFactory);
+            expect(hasFn).to.throw(assert.AssertionError, 'name must be a string');
+        });
+    });
 });
