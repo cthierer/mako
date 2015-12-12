@@ -8,7 +8,8 @@ var _ = require('lodash'),
     Promise = require('bluebird'),
     GitHubAPI = require('github'),
     utils = require('../utils'),
-    errors = require('../errors');
+    errors = require('../errors'),
+    helpers = require('./helpers');
 
 /**
  * REST GitHub API client. Uses version 3 of the GitHub API.
@@ -35,6 +36,12 @@ var GitHubClient = function (options) {
     var version = '3.0.0';
 
     /**
+     * Client services available. Used to help organize methods.
+     * @private
+     */
+    var services = {};
+
+    /**
      * GitHub API client instance.
      * @see {@link https://www.npmjs.com/package/github}
      * @private
@@ -53,50 +60,13 @@ var GitHubClient = function (options) {
 
     client = new GitHubAPI(options);
 
+    services.user = new helpers.v3.UserService(client);
+
     /**
-     * Return a user identified by username and password.
-     * @param {string} username The user's name.
-     * @param {string} password The user's password.
-     * @throws {AssertionError} Thrown if either parameter is missing or not a
-     *  string.
-     * @throws {AuthenticationError} Thrown if there was an authentication
-     *  failure with the given username and password. If the user is not valid
-     *  or not found, then this will trigger an authentication error.
-     * @throws {ServiceError} Thrown if an error occurrs communciating with the
-     *  API.
-     * @returns {object} An instantiated User object
+     * Avaialable services on this client.
+     * @type {object}
      */
-    this.getUserByPassword = function (username, password) {
-        var deferred = Promise.pending();
-
-        // TODO are assertion errors the right type of error for promises?
-        assert(_.isString(username), 'username is required');
-        assert(!_.isEmpty(username), 'username must not be blank');
-        assert(_.isString(password), 'password is required');
-        assert(!_.isEmpty(password), 'password must not be blank');
-
-        client.authenticate({
-            type: 'basic',
-            username: username,
-            password: password
-        });
-
-        client.user.get({}, function (err, result) {
-            if (err) {
-                if (err.code == 401) {
-                    // not authorized
-                    deferred.reject(new errors.Authentication(username,
-                        utils.errors.getErrorMessage(err)));
-                } else {
-                    deferred.reject(new errors.Service(err));
-                }
-            } else {
-                deferred.resolve(result);
-            }
-        });
-
-        return deferred.promise;
-    };
+    this.services = services;
 
     /**
      * @return {string} The GitHub API version being used.
