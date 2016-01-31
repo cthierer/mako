@@ -61,6 +61,7 @@ var GitHubClient = function (options) {
     client = new GitHubAPI(options);
 
     services.user = new helpers.v3.UserService(client);
+    services.oauth = new helpers.v3.OAuthService({github: _.clone(options)});
 
     /**
      * Avaialable services on this client.

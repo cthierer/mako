@@ -132,6 +132,7 @@ describe('GitHub client', function () {
 
     describe('services', function () {
         var UserServiceHelper = require('../../services/helpers/v3/user_service'),
+            OAuthServiceHelper = require('../../services/helpers/v3/oauth_service'),
             client;
 
         beforeEach(function () {
@@ -145,6 +146,11 @@ describe('GitHub client', function () {
         it('includes a user service instance', function () {
             expect(client.services).to.have.property('user').
                 that.is.an.instanceOf(UserServiceHelper);
+        });
+
+        it('includes an oauth service instance', function () {
+            expect(client.services).to.have.property('oauth').
+                that.is.an.instanceOf(OAuthServiceHelper);
         });
     });
 });
