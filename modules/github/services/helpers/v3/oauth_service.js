@@ -92,9 +92,14 @@ var OAuthServiceHelper = function (options) {
             parameters: parameters,
             headers: headers
         }).then(function (response) {
-            // response body includes: token_type, scope, access_token
             // TODO need to standardize this in a model? document?
-            return response.getBody().getRawContent();
+            var jsonResponse = response.getBody().getRawContent();
+            
+            return {
+                tokenType: jsonResponse['token_type'],
+                scope: jsonResponse['scope'],
+                accessToken: jsonResponse['access_token']
+            };
         });
         // TODO handle error
     };

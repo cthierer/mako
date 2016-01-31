@@ -90,17 +90,19 @@ describe('oauth service helper', function () {
                     request;
 
                 beforeEach(function () {
-                    // stubbing out the components from the REST client module 
-                    // these should all be unit tested in the module itself 
-                    body = { getRawContent: sinon.stub().returns(githubResponse) };
-                    response = { getBody: sinon.stub().returns(body) };
-                    request = sinon.stub(helper, 'makeRequest').returns(Promise.resolve(response));
-
+                    // TODO pull from a resource JSON file
                     githubResponse = {
                         'token_type': 'bearer',
                         'scope': 'repo,gist',
                         'access_token': '1234567890'
                     };
+                    
+
+                    // stubbing out the components from the REST client module 
+                    // these should all be unit tested in the module itself 
+                    body = { getRawContent: sinon.stub().returns(githubResponse) };
+                    response = { getBody: sinon.stub().returns(body) };
+                    request = sinon.stub(helper, 'makeRequest').returns(Promise.resolve(response));
                 });
 
                 it('is a POST request', function (done) {
@@ -167,9 +169,9 @@ describe('oauth service helper', function () {
                 it('parses the response', function (done) {
                     helper.createAccessToken('123', '456', '789').then(function (response) {
                         expect(response).to.be.an('object');
-                        expect(response).to.have.property('token_type', githubResponse['token_type']);
+                        expect(response).to.have.property('tokenType', githubResponse['token_type']);
                         expect(response).to.have.property('scope', githubResponse['scope']);
-                        expect(response).to.have.property('access_token', githubResponse['access_token']);
+                        expect(response).to.have.property('accessToken', githubResponse['access_token']);
                         done();
                     });
                 });
