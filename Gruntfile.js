@@ -10,9 +10,9 @@ module.exports = function (grunt) {
                     reporter: 'spec'
                 },
                 src: [
-                    'modules/authentication/test/**/*.js',
-                    'modules/github/test/**/*.js',
-                    'modules/rest-client/test/**/*.js'
+                    'modules/authentication/test/**/*.mocha.js',
+                    'modules/github/test/**/*.mocha.js',
+                    'modules/rest-client/test/**/*.mocha.js'
                 ]
             }
         },
