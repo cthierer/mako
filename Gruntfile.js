@@ -24,12 +24,24 @@ module.exports = function (grunt) {
                     destination: 'dist/docs/dev'
                 }
             }
+        }, 
+
+        eslint: {
+            modules: {
+                src: ['modules/**/*.js'],
+                options: {
+                    configFile: 'modules/eslint.config.json'
+                }
+            }
         }
     });
 
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-jsdoc');
+    grunt.loadNpmTasks('grunt-eslint');
 
     grunt.registerTask('test', ['mochaTest:unit']);
     grunt.registerTask('docs', ['jsdoc:dist']);
+    grunt.registerTask('lint', ['eslint:modules']);
+    grunt.registerTask('build', ['lint','test','docs']);
 };
