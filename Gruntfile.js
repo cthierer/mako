@@ -11,7 +11,8 @@ module.exports = function (grunt) {
                 },
                 src: [
                     'modules/authentication/test/**/*.js',
-                    'modules/github/test/**/*.js'
+                    'modules/github/test/**/*.js',
+                    'modules/rest-client/test/**/*.js'
                 ]
             }
         },

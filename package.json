@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/cthierer/mako",
   "dependencies": {
+    "bluebird": "^3.1.5",
     "config": "^1.17.1",
     "github": "^0.2.4",
     "lodash": "^3.10.1",
