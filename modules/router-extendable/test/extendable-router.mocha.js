@@ -2,7 +2,7 @@ var expect = require('chai').expect,
     sinon = require('sinon'),
     assert = require('assert'),
     Router = require('restify-router').Router,
-    ExtendableRouter = require('../index'); 
+    ExtendableRouter = require('../extendable-router'); 
 
 describe('extendable router', function () {
 
