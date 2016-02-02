@@ -12,7 +12,8 @@ module.exports = function (grunt) {
                 src: [
                     'modules/authentication/test/**/*.mocha.js',
                     'modules/github/test/**/*.mocha.js',
-                    'modules/rest-client/test/**/*.mocha.js'
+                    'modules/rest-client/test/**/*.mocha.js',
+                    'modules/router-extendable/test/**/*.mocha.js'
                 ]
             }
         },
