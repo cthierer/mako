@@ -19,7 +19,7 @@ var GitHubAuthRouter = function (tokenController) {
 
     Router.call(this);
 
-    this.get('/token', tokenController.createToken);
+    this.get('/token', tokenController.createToken.bind(tokenController));
 };
 
 util.inherits(GitHubAuthRouter, Router);
