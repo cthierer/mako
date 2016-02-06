@@ -1,6 +1,12 @@
 {
     "server": {
-        "port": 4000
+        "port": 4000,
+        "root_prefix": ["/", "/api"]
+    },
+    "documentation": {
+        "route": "/docs", 
+        "path": "./dist",
+        "enabled": true
     },
     "github": {
         "oauth": {}
