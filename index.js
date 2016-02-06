@@ -10,6 +10,8 @@ server.use(restify.queryParser());
 
 router.apply(server, '/');
 
+logger.info('Server configured:', "\n", server.toString());
+
 server.listen(port, function () {
     logger.info('Server started, listening on port ', port);
 });

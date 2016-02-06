@@ -6,6 +6,7 @@
 var assert = require('assert'),
     util = require('util'),
     path = require('path').posix,
+    logger = require('log4js').getLogger(),
     _ = require('lodash'),
     Router = require('restify-router').Router;
 
@@ -48,12 +49,21 @@ ExtendableRouter.prototype.extend = function (prefix, router) {
 ExtendableRouter.prototype.apply = function (server, prefix) {
     prefix = path.join('/', prefix || '');
 
+    if (logger.isDebugEnabled()) {
+        logger.debug('Applying routes', 
+            (prefix ? 'with prefix ' + prefix : '(no prefix)...'));
+    }
+
     this.applyRoutes(server, prefix);
 
     for (var i = 0; i < this.nextRouters.length; i++) {
         var nextRouter = this.nextRouters[i],
             nextPrefix = nextRouter.prefix || '',
             mergedPrefix = path.join(prefix, nextPrefix);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug('Chaining router to prefix', mergedPrefix);
+        }
 
         nextRouter.router.apply(server, mergedPrefix);
     }
