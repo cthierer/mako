@@ -58,12 +58,18 @@ var ContentType = function (value, options) {
      * @returns {boolean} 
      */
     this.matchesValue = function (contentType) {
+        var parts;
+
         if (!_.isString(contentType)) {
             return false;
         }
 
-        return utils.Strings.equalsIgnoreCase(contentType, value) || 
-            _.some(options.synonyms, utils.Strings.equalsPredicate(contentType));
+        // TODO want to use additional information, like encoding=utf-8
+        // TODO handle more generically
+        parts = contentType.split(';');
+
+        return utils.Strings.equalsIgnoreCase(parts[0], value) || 
+            _.some(options.synonyms, utils.Strings.equalsPredicate(parts[0]));
     };
 
     /**

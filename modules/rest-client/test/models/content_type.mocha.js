@@ -76,6 +76,11 @@ describe('Content Type model', function () {
                 expect(model.matchesValue(value.toUpperCase())).to.be.true;
                 expect(model.matchesValue('TEXT/TEST')).to.be.true;
             });
+
+            it('ignores any additional information', function() {
+                expect(model.matchesValue('test; encoding=utf-8')).to.be.true;
+                expect(model.matchesValue('text/test; encoding=utf-8')).to.be.true;
+            });
         });
 
         it('sets the content type on a request', function () {

@@ -31,6 +31,13 @@ if (docConfig.enabled) {
     logger.info('Skipping mounting documentation; not enabled...');
 }
 
+// web application routes 
+// TODO modularize how this is configured 
+server.get(/\/app\/?.*/, restify.serveStatic({
+    directory: './dist',
+    default: 'index.html'
+}));
+
 // set up routes
 if (!_.isArray(rootPrefix)) {
     rootPrefix = [rootPrefix];

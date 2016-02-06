@@ -7,6 +7,7 @@
      assert = require('assert'),
      _ = require('lodash'),
      Promise = require('bluebird'),
+     logger = require('log4js').getLogger(),
      Message = require('./message'),
      Body = require('./body'),
      Response = require('./response'),
@@ -49,8 +50,13 @@ var Request = function (clientRequest) {
             // handle unknown content type
             // TODO should this default to basic text? 
             if (!contentType) {
-                deferred.reject(new errrors.UnknownContentType(contentTypeValue));
+                deferredResponse.reject(new errors.UnknownContentType(contentTypeValue));
                 return;
+            }
+
+            if(logger.isDebugEnabled()) {
+                logger.debug('Finished recieving response from REST call; body =',
+                    bodyContent);
             }
 
             // TODO body must be manually decoded - make this implicit 
@@ -128,6 +134,10 @@ var Request = function (clientRequest) {
             throw new errors.InvalidState('request already sent');
         }
 
+        if (logger.isDebugEnabled()) {
+            logger.debug('Setting header', key, '=', value);
+        }
+
         clientRequest.setHeader(key, value);
     };
 
@@ -144,6 +154,12 @@ var Request = function (clientRequest) {
         if (requestSent) {
             throw new errors.InvalidState('request already sent');
         }
+
+        if (logger.isDebugEnabled()) {
+            logger.debug('Writing body -', body.getHttpContent());
+        }
+
+        this.setHeader(ContentType.HEADER, body.getContentType().getValue());
 
         clientRequest.write(body.getHttpContent());
     };

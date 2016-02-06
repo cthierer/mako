@@ -7,8 +7,11 @@ var assert = require('assert'),
     util = require('util'),
     path = require('path').posix,
     _ = require('lodash'),
+    logger = require('log4js').getLogger(),
     restClient = require('../../../../rest-client'),
+    errors = require('../../../errors'),
     RESTClientService = restClient.services.RESTClientService,
+    Body = restClient.models.Body,
     ContentType = restClient.models.ContentType, 
     Action = restClient.models.Action;
 
@@ -16,7 +19,7 @@ var assert = require('assert'),
  * @constant
  * @type {string}
  */
-const PATH_PREFIX = '/v3/login/oauth';
+const PATH_PREFIX = '/login/oauth';
 
 /**
  * @constant
@@ -69,6 +72,10 @@ var OAuthServiceHelper = function (options) {
             state: null
         });
 
+        if (logger.isDebugEnabled()) {
+            logger.debug('Requesting access token; code =', code);
+        }
+
         // map the input parameters to the GitHub parameters 
         // TODO is this the correct format? should this be in teh body?
         parameters['client_id'] = clientId;
@@ -89,19 +96,30 @@ var OAuthServiceHelper = function (options) {
         // make the POST request, and then decode the response 
         // TODO encapsulate makeRequest into various actions (i.e., post, get)
         return this.makeRequest(Action.Factory.get('post'), PATH_ACCESS_TOKEN, {
-            parameters: parameters,
+            body: new Body(parameters, ContentType.Factory.get('application/json')),
             headers: headers
         }).then(function (response) {
             // TODO need to standardize this in a model? document?
             var jsonResponse = response.getBody().getRawContent();
             
+            if (_.has(jsonResponse, 'error')) {
+                var err = new errors.GitHub(jsonResponse);
+
+                logger.error('Encountered GitHub error -', err.message, '(' + 
+                    err.errorCode, '-', err.errorURI + ')');
+
+                throw err;
+            }
+
             return {
                 tokenType: jsonResponse['token_type'],
                 scope: jsonResponse['scope'],
                 accessToken: jsonResponse['access_token']
             };
+        }).catch(function (err) {
+            logger.error('Encountered error while getting token -', err.toString());
+            throw err;
         });
-        // TODO handle error
     };
 };
 

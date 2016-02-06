@@ -9,6 +9,7 @@ var assert = require('assert'),
     https = require('https'),
     url = require('url'),
     querystring = require('querystring'),
+    logger = require('log4js').getLogger(),
     Request = require('./request');
 
 /**
@@ -73,7 +74,8 @@ var Action = function (method) {
         var httpOptions = _.defaults(options || {}, {
             port: 80,
             parameters: {},
-            headers: {}
+            headers: {},
+            protocol: 'http'
         });
 
         if (!options) {
@@ -86,6 +88,7 @@ var Action = function (method) {
         httpOptions.path = buildPath(httpOptions.pathname, options.parameters);
         httpOptions.header = options.headers;
         httpOptions.method = method;
+        httpOptions.protocol += ':';
 
         return httpOptions;
     };
@@ -111,8 +114,8 @@ var Action = function (method) {
      *  can be further modified, before being sent to the remote server.
      */
     this.initializeRequest = function (options) {
-        var httpOptions = getHttpOptions(options),
-            engine = getEngine(httpOptions.protocol);
+        var httpOptions = getHttpOptions(_.clone(options || {})),
+            engine = getEngine(options.protocol);
 
         // TODO add lifecycle hooks to customize initialization behavior
 

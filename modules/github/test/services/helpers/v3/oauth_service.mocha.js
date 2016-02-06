@@ -2,6 +2,8 @@ var expect = require('chai').expect,
     sinon = require('sinon'),
     assert = require('assert'),
     Promise = require('bluebird'),
+    errors = require('../../../../errors'),
+    restClient = require('../../../../../rest-client'),
     OAuthServiceHelper = require('../../../../services/helpers/v3/oauth_service'),
     restClient = require('../../../../../rest-client'),
     Action = restClient.models.Action,
@@ -24,7 +26,7 @@ describe('oauth service helper', function () {
         expect(helper).to.exist;
         expect(helper.getProtocol()).to.equal(options.github.protocol);
         expect(helper.getPort()).to.equal(options.github.port);
-        expect(helper.getPathPrefix()).to.equal('/v3/login/oauth');
+        expect(helper.getPathPrefix()).to.equal('/login/oauth');
         expect(helper.getHost()).to.equal(options.github.host);
     });
 
@@ -39,7 +41,7 @@ describe('oauth service helper', function () {
 
         helper = new OAuthServiceHelper(options);
 
-        expect(helper.getPathPrefix()).to.equal('/api/v3/login/oauth');
+        expect(helper.getPathPrefix()).to.equal('/api/login/oauth');
     });
 
     describe('instantiated helper', function () {
@@ -124,17 +126,29 @@ describe('oauth service helper', function () {
                     });
                 });
 
-                it('passes the required parameters', function (done) {
+                it('passes the required parameters in the body', function (done) {
                     helper.createAccessToken('123', '456', '789').then(function () {
                         var requestCall = request.getCall(0),
                             callArgs = requestCall.args,
                             callOptions = callArgs[2];
-                        expect(callOptions).to.be.an('object').with.property('parameters');
-                        expect(callOptions.parameters).to.have.property('client_id', '123');
-                        expect(callOptions.parameters).to.have.property('client_secret', '456');
-                        expect(callOptions.parameters).to.have.property('code', '789');
-                        expect(callOptions.parameters).not.to.have.property('redirect_uri');
-                        expect(callOptions.parameters).not.to.have.property('state');
+                        expect(callOptions).to.be.an('object').with.property('body');
+                        expect(callOptions.body.getRawContent()).to.be.an('object');
+                        expect(callOptions.body.getRawContent()).to.have.property('client_id', '123');
+                        expect(callOptions.body.getRawContent()).to.have.property('client_secret', '456');
+                        expect(callOptions.body.getRawContent()).to.have.property('code', '789');
+                        expect(callOptions.body.getRawContent()).not.to.have.property('redirect_uri');
+                        expect(callOptions.body.getRawContent()).not.to.have.property('state');
+                        done();
+                    });
+                });
+
+                it('uses a JSON body', function (done) {
+                    helper.createAccessToken('123', '456', '789').then(function () {
+                        var requestCall = request.getCall(0),
+                            callArgs = requestCall.args,
+                            callOptions = callArgs[2];
+                        expect(callOptions.body.getContentType().getValue())
+                            .to.equal('application/json');
                         done();
                     });
                 });
@@ -149,8 +163,8 @@ describe('oauth service helper', function () {
                         var requestCall = request.getCall(0),
                             callArgs = requestCall.args,
                             callOptions = callArgs[2];
-                        expect(callOptions.parameters).to.have.property('redirect_uri', options.redirectURI);
-                        expect(callOptions.parameters).to.have.property('state', options.state);
+                        expect(callOptions.body.getRawContent()).to.have.property('redirect_uri', options.redirectURI);
+                        expect(callOptions.body.getRawContent()).to.have.property('state', options.state);
                         done();
                     });
                 });
@@ -184,6 +198,25 @@ describe('oauth service helper', function () {
                 helper.createAccessToken('123', '456', '789').catch(function (response) {
                     expect(response).to.exist;
                     expect(response).to.equal(err);
+                    done();
+                });
+            });
+
+            it('handles a GitHub error with a 200 status', function (done) {
+                var err = {
+                        error: 'bad_verification_code',
+                        error_description: 'The code passed is incorrect or expired.',
+                        error_uri: 'https://developer.github.com/v3/oauth/#bad-verification-code'
+                    },
+                    body = new restClient.models.Body(err, 
+                        restClient.models.ContentType.Factory.get('application/json')),
+                    response = new restClient.models.Response(200, {body: body}),
+                    request = sinon.stub(helper, 'makeRequest')
+                        .returns(Promise.resolve(response));
+
+                helper.createAccessToken('123', '456', '789').catch(function (error) {
+                    expect(error).to.exist;
+                    expect(error).to.be.an.instanceOf(errors.GitHub);
                     done();
                 });
             });

@@ -71,6 +71,10 @@ describe('Action model', function () {
 
                 expect(result).to.be.an.instanceOf(models.Request);
             });
+
+            it.skip('formats the HTTP protocol', function () {});
+
+            it.skip('uses the protocol to load the correct engine', function () {});
         });
     });
 

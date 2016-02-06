@@ -5,6 +5,7 @@
 
 var assert = require('assert'),
     path = require('path').posix,
+    logger = require('log4js').getLogger(),
     _ = require('lodash'),
     models = require('../models');
 
@@ -87,10 +88,15 @@ var RESTClientService = function (options) {
 
         // set the request options 
         requestOptions.hostname = clientOptions.host;
+        requestOptions.protocol = clientOptions.protocol;
         requestOptions.port = clientOptions.port;
         requestOptions.pathname = path.join(clientOptions.pathPrefix, endpoint);
         requestOptions.parameters = options.parameters;
         requestOptions.headers = options.headers;
+
+        if(logger.isDebugEnabled()) {
+            logger.debug('Initializing REST request -', requestOptions);
+        }
 
         // generate the request 
         request = action.initializeRequest(requestOptions);

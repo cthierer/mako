@@ -167,6 +167,17 @@ describe('REST client service', function () {
                 });
             });
 
+            it('includes the protocol', function (done) {
+                service.makeRequest(action, '/path/to/endpoint').then(function () {
+                    var initCall = action.initializeRequest.getCall(0),
+                        initOptions = initCall.args[0];
+
+                    expect(initOptions).to.have.property('protocol', 'https');
+
+                    done();
+                });
+            });
+
             it('includes custom headers', function (done) {
                 var options = {};
 

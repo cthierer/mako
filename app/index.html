@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Mako Web Client</title>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    </head>
+    <body>
+        <h1>Mako Web Client</h1>
+        <a id="github-login" href="#">Log in using GitHub</a>
+
+        <script type="text/javascript">
+        $(document).ready(function () {
+            $('#github-login').click(function (event) {
+                event.preventDefault();
+
+                console.log('login triggered');
+
+                window.location = 'https://github.com/login/oauth/authorize?client_id=a546b94001f3e57686c5';
+            });
+        });
+        </script>
+    </body>
+</html>

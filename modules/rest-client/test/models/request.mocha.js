@@ -97,6 +97,22 @@ describe('Request model', function () {
                 expect(clientRequest.write.calledOnce);
                 expect(body.getHttpContent.calledOnce);
             });
+
+            it('sets the content type header', function () {
+                var body = new models.Body({test: 'value'},
+                        models.ContentType.Factory.get('application/json')),
+                    encoded = JSON.stringify({test: 'value'});
+
+                clientRequest.write.withArgs(encoded);
+                sinon.stub(body, 'getHttpContent').returns(encoded);
+                sinon.stub(model, 'setHeader');
+
+                model.writeBody(body);
+
+                expect(model.setHeader.calledOnce).to.be.true;
+                expect(model.setHeader.getCall(0).args[0]).to.equal('content-type');
+                expect(model.setHeader.getCall(0).args[1]).to.equal('application/json');
+            });
         });
 
         describe('sending', function () {
@@ -234,6 +250,8 @@ describe('Request model', function () {
                     expect(err).to.be.an.instanceOf(Error);
                 });
             });
+
+            it.skip('handles unknown content types', function () {});
         });
     });
 });

@@ -51,7 +51,7 @@ var GitHubClient = function (options) {
     options = _.clone(_.defaults(options || {}, {
         debug:      false,
         protocol:   'https',
-        host:       'api.github.com',
+        host:       'github.com',
         timeout:    5000,
         headers:    {}
     }));

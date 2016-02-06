@@ -38,5 +38,5 @@ module.exports = {
      * Unknown Content Type error. 
      * @see module:rest-client/errors/UnknownContentType
      */
-    UnkonwnContentType: require('./unknown_content_type')
+    UnknownContentType: require('./unknown_content_type')
 };

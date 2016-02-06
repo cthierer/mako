@@ -12,6 +12,12 @@
      Authentication: require('./authentication'),
 
      /**
+      * GitHub error.
+      * @see module:github/errors/GitHubError
+      */
+     GitHub: require('./github_error'),
+
+     /**
       * Resource not found failure.
       * @see module:github/errors/NotFound
       */
