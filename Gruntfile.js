@@ -11,6 +11,7 @@ module.exports = function (grunt) {
                 },
                 src: [
                     'modules/authentication/test/**/*.mocha.js',
+                    'modules/authentication_github/test/**/*.mocha.js',
                     'modules/github/test/**/*.mocha.js',
                     'modules/rest-client/test/**/*.mocha.js',
                     'modules/router-extendable/test/**/*.mocha.js'
@@ -20,7 +21,7 @@ module.exports = function (grunt) {
 
         jsdoc: {
             dist: {
-                src: ['modules/**/*.js'],
+                src: ['modules/**/*.js', 'server/**/*.js'],
                 options: {
                     destination: 'dist/docs/dev'
                 }
@@ -33,6 +34,12 @@ module.exports = function (grunt) {
                 options: {
                     configFile: 'modules/eslint.config.json'
                 }
+            },
+            server: {
+                src: ['server/**/*.js'],
+                options: {
+                    configFile: 'server/eslint.config.json'
+                }
             }
         }
     });
@@ -43,6 +50,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', ['mochaTest:unit']);
     grunt.registerTask('docs', ['jsdoc:dist']);
-    grunt.registerTask('lint', ['eslint:modules']);
+    grunt.registerTask('lint', ['eslint:modules', 'eslint:server']);
     grunt.registerTask('build', ['lint','test','docs']);
 };
