@@ -12,8 +12,8 @@ var assert = require('assert'),
  * @param {module:authentication_github/services/TokenService} tokenService (required)
  */
 var TokenController = function (tokenService) {
-    assert(tokenService instanceof TokenService, 
-        'tokenService must be an instance of Token Service');
+    assert(!_.isNull(tokenService) && !_.isUndefined(tokenService), 
+        'tokenService must be defined');
 
     /**
      * @param {restify.Request} req
