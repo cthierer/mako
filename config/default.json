@@ -3,6 +3,7 @@
         "port": 4000,
         "root_prefix": ["/", "/api"]
     },
+    "database": {},
     "documentation": {
         "route": "/docs", 
         "path": "./dist",

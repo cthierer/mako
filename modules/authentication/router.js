@@ -13,10 +13,13 @@ var util = require('util'),
  * @class
  * @extends module:router-extendable/ExtendableRouter
  * @param {object} providers (required)
+ * @param {module:authentication/controllers/SessionController} sessionController (required)
  */
-var AuthRouter = function (providers) {
+var AuthRouter = function (providers, sessionController) {
     assert(_.isObject(providers) && !_.isEmpty(providers), 
         'providers must be an object with at least one mapping');
+    assert(_.isObject(sessionController) && sessionController,
+        'sessionController must be defined');
 
     Router.call(this);
 
@@ -26,6 +29,8 @@ var AuthRouter = function (providers) {
         assert(router instanceof Router, 'router must be an Extendable Router');
         this.extend(name, router);
     }
+
+    this.post('/sessions', sessionController.createSession.bind(sessionController));
 };
 
 util.inherits(AuthRouter, Router);

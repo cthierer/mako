@@ -22,8 +22,9 @@ var DataService = function (connection) {
     // initiate a knex connection 
     // TODO should this be an injected dependency? 
     knex = new Knex({
-        client: 'postgres',
-        connection: connection
+        client: 'pg',
+        connection: connection,
+        debug: true
     });
 
     // initiate a bookshelf instance 

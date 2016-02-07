@@ -5,6 +5,12 @@
 
 module.exports = {
 
+    controllers: require('./controllers'),
+
+    models: require('./models'),
+
+    services: require('./services'),
+
     /**
      * @see module:authentication/Router
      */

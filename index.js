@@ -12,6 +12,7 @@ var path = require('path').posix,
 
 // configure restify
 server.use(restify.queryParser());
+server.use(restify.bodyParser());
 
 // documentation routes
 // TODO modularize how this is configured 

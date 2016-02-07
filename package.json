@@ -27,7 +27,8 @@
     "log4js": "^0.6.29",
     "pg": "^4.4.4",
     "restify": "^4.0.3",
-    "restify-router": "^0.2.1"
+    "restify-router": "^0.2.1",
+    "uuid": "^2.0.1"
   },
   "devDependencies": {
     "chai": "^3.4.1",

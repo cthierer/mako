@@ -15,7 +15,21 @@
 
                 console.log('login triggered');
 
-                window.location = 'https://github.com/login/oauth/authorize?client_id=a546b94001f3e57686c5';
+                $.ajax({
+                    contentType: 'application/json',
+                    data: JSON.stringify({'provider': 'github'}),
+                    dataType: 'json',
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('ERROR:', textStatus, ';', errorThrown);
+                    },
+                    method: 'POST',
+                    success: function (data) {
+                        console.log('Starting new session');
+
+                        window.location = 'https://github.com/login/oauth/authorize?client_id=a546b94001f3e57686c5&state=' + data['id'];
+                    },
+                    url: 'http://localhost:4000/auth/sessions'
+                });
             });
         });
         </script>

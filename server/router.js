@@ -7,6 +7,7 @@ var util = require('util'),
     Router = require('../modules/router-extendable').ExtendableRouter,
     config = require('config'),
     authentication = require('../modules/authentication'),
+    database = require('../modules/database'),
     githubAuthentication = require('../modules/authentication_github'),
     github = require('../modules/github');
 
@@ -15,10 +16,18 @@ var util = require('util'),
  * @extends module:router-extendable/ExtendableRouter
  */
 var ServerRouter = function () {
+    var dataService = new database.DataService(config.get('database'));
+
     Router.call(this);
+
+    authentication.models.registerAll(dataService);
 
     // TODO modularize the instantiation of various parts 
     // TODO explore configurable dependency injection 
+
+    /* ----------------------------------------------------------------------
+     * Auth-related routers
+     * ---------------------------------------------------------------------- */
 
     function getGitHubAuthRouter (githubConfig) {
         var githubClient = new github.services.GitHubClient(githubConfig),
@@ -28,17 +37,26 @@ var ServerRouter = function () {
         return new githubAuthentication.Router(tokenController);
     };
 
-    function getAuthRouter (providers) {
-        return new authentication.Router(providers);
-    };
-
     function getAuthProviders () {
         return {
             'github': getGitHubAuthRouter(config.get('github'))
         };
     };
 
-    this.extend('/auth', getAuthRouter(getAuthProviders()));
+    function getSessionController () {
+        var sessionService = new authentication.services.Session(dataService);
+        return new authentication.controllers.Session(sessionService);
+    };
+
+    function getAuthRouter (providers, sessionController) {
+        return new authentication.Router(providers, sessionController);
+    };
+
+    /* ----------------------------------------------------------------------
+     * Mount routers
+     * ---------------------------------------------------------------------- */
+
+    this.extend('/auth', getAuthRouter(getAuthProviders(), getSessionController()));
 };
 
 util.inherits(ServerRouter, Router);
