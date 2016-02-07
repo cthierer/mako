@@ -16,11 +16,14 @@ var util = require('util'),
  * @extends module:router-extendable/ExtendableRouter
  */
 var ServerRouter = function () {
-    var dataService = new database.DataService(config.get('database'));
+    var dataService = new database.DataService(config.get('database')),
+        sessionService;
 
     Router.call(this);
 
     authentication.models.registerAll(dataService);
+
+    sessionService = new authentication.services.Session(dataService)
 
     // TODO modularize the instantiation of various parts 
     // TODO explore configurable dependency injection 
@@ -32,7 +35,7 @@ var ServerRouter = function () {
     function getGitHubAuthRouter (githubConfig) {
         var githubClient = new github.services.GitHubClient(githubConfig),
             tokenService = new githubAuthentication.services.Token(githubClient, { github: githubConfig }),
-            tokenController = new githubAuthentication.controllers.Token(tokenService);
+            tokenController = new githubAuthentication.controllers.Token(tokenService, sessionService);
 
         return new githubAuthentication.Router(tokenController);
     };
@@ -44,7 +47,6 @@ var ServerRouter = function () {
     };
 
     function getSessionController () {
-        var sessionService = new authentication.services.Session(dataService);
         return new authentication.controllers.Session(sessionService);
     };
 

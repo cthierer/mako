@@ -11,13 +11,13 @@ var SessionService = function (dataService) {
     function getToken () {
         var deferred = Promise.pending();
 
-        crypto.randomBytes(191, function (err, buf) {
+        crypto.randomBytes(128, function (err, buf) {
             if (err) {
                 deferred.reject(err);
                 return;
             }
 
-            deferred.resolve(buf.toString('base64'));
+            deferred.resolve(buf.toString('hex'));
         });
 
         return deferred.promise;
@@ -39,6 +39,30 @@ var SessionService = function (dataService) {
                 logger.error('Encountered error while saving Session:', err);
                 throw err;
             });
+        });
+    };
+
+    this.activateSession = function (id, providerToken) {
+        var model = new Session({
+            'id': id
+        });
+
+        return model.fetch({
+            require:true
+        }).then(function (model) {
+            return model.save({
+                'provider_token': providerToken,
+                'is_active': true
+            }).then(function (model) {
+                return {
+                    id: model.get('id'),
+                    token: model.get('app_token'),
+                    provider: model.get('provider')
+                };    
+            });
+        }).catch(function (err) {
+            logger.error('Encountered error while activating Session:', err);
+            throw err;
         });
     };
 };
