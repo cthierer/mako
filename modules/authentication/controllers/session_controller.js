@@ -1,6 +1,26 @@
+/**
+ * @module authentication/controllers/SessionController
+ */
 
-var SessionController = function (sessionService) {
+/**
+ * @class
+ * @param {module:authentication/services/SessionService} sessionService (required)
+ * @param {module:authentication/services/ProviderFactory} providerFactory (required)
+ */
+var SessionController = function (sessionService, providerFactory) {
 
+    /**
+     * @returns {module:authentication/services/ProviderFactory}
+     */
+    this.getProviderFactory = function () {
+        return providerFactory;
+    };
+
+    /**
+     * @param {restify.Request} req
+     * @param {restify.Response} res
+     * @param {function} next 
+     */ 
     this.createSession = function (req, res, next) {
         var provider = req.params['provider'];
 

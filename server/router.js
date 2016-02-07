@@ -52,18 +52,18 @@ var ServerRouter = function () {
     };
 
     function getSessionController () {
-        return new authentication.controllers.Session(sessionService);
+        return new authentication.controllers.Session(sessionService, getAuthProviders());
     };
 
-    function getAuthRouter (providers, sessionController) {
-        return new authentication.Router(providers, sessionController);
+    function getAuthRouter (sessionController) {
+        return new authentication.Router(sessionController);
     };
 
     /* ----------------------------------------------------------------------
      * Mount routers
      * ---------------------------------------------------------------------- */
 
-    this.extend('/auth', getAuthRouter(getAuthProviders(), getSessionController()));
+    this.extend('/auth', getAuthRouter(getSessionController()));
 };
 
 util.inherits(ServerRouter, Router);

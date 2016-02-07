@@ -12,19 +12,16 @@ var util = require('util'),
 /**
  * @class
  * @extends module:router-extendable/ExtendableRouter
- * @param {module:authentication/services/ProviderFactory} providerFactory (required)
  * @param {module:authentication/controllers/SessionController} sessionController (required)
  */
-var AuthRouter = function (providerFactory, sessionController) {
-    assert(_.isObject(providerFactory) && providerFactory, 
-        'providerFactory must be an object with at least one mapping');
+var AuthRouter = function (sessionController) {
     assert(_.isObject(sessionController) && sessionController,
         'sessionController must be defined');
 
     Router.call(this);
 
     // register providers
-    providerFactory.mountAll(this);
+    sessionController.getProviderFactory().mountAll(this);
 
     // register controllers
     this.post('/sessions', sessionController.createSession.bind(sessionController));
