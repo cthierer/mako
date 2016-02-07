@@ -45,7 +45,8 @@ var ServerRouter = function () {
 
         // TODO encapsulate the configuration object definition 
         providerFactory.add('github',{
-            'client_id' : config.get('github.oauth.client_id')
+            'client_id' : config.get('github.oauth.client_id'),
+            'auth_uri': config.get('github.oauth.auth_uri')
         }, getGitHubAuthRouter(config.get('github')));
 
         return providerFactory;

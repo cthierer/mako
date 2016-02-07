@@ -2,7 +2,10 @@
  * @module authentication/controllers/SessionController
  */
 
-var restify = require('restify');
+var querystring = require('querystring'),
+    _ = require('lodash'),
+    restify = require('restify'),
+    hyperjson = require('hyperjson');
 
 /**
  * @class
@@ -24,19 +27,39 @@ var SessionController = function (sessionService, providerFactory) {
      * @param {function} next 
      */ 
     this.createSession = function (req, res, next) {
-        var provider = req.params['provider'];
+        var providerStr = req.params['provider'],
+            provider;
 
         // validate that provider is a legal value 
-        if (!providerFactory.has(provider)) {
+        if (!providerFactory.has(providerStr)) {
             next(new restify.InvalidContentError('provider is not recognized'));
             return;
         }
 
-        sessionService.createSession(provider).then(function (id) {
-            // TODO want to also include other info for provider, like client id
-            res.send({
-                'id': id
+        provider = providerFactory.get(providerStr);
+
+        sessionService.createSession(providerStr).then(function (id) {
+            var response = hyperjson({
+                'id': id,
+                'provider': {
+                    name: provider.name,
+                    configuration: provider.configuration
+                }
             });
+
+            // TODO need to encapsulate this 
+            if (_.has(provider.configuration, 'auth_uri')) {
+                var authUrl = provider.configuration['auth_uri'];
+
+                authUrl += '?' + querystring.stringify({
+                    'client_id': provider.configuration['client_id'],
+                    'state': id
+                });
+
+                response.link('provider:auth', authUrl);
+            }
+
+            res.send(response.toObject());
         }).catch(function (err) {
             res.send(err);
         }).finally(function () {
