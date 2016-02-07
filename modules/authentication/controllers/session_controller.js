@@ -2,6 +2,8 @@
  * @module authentication/controllers/SessionController
  */
 
+var restify = require('restify');
+
 /**
  * @class
  * @param {module:authentication/services/SessionService} sessionService (required)
@@ -24,7 +26,11 @@ var SessionController = function (sessionService, providerFactory) {
     this.createSession = function (req, res, next) {
         var provider = req.params['provider'];
 
-        // TODO validate that provider is a legal value 
+        // validate that provider is a legal value 
+        if (!providerFactory.has(provider)) {
+            next(new restify.InvalidContentError('provider is not recognized'));
+            return;
+        }
 
         sessionService.createSession(provider).then(function (id) {
             // TODO want to also include other info for provider, like client id
