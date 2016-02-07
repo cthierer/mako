@@ -11,7 +11,8 @@ var SessionService = function (dataService) {
     function getToken () {
         var deferred = Promise.pending();
 
-        crypto.randomBytes(128, function (err, buf) {
+        // TODO make token length configurable
+        crypto.randomBytes(32, function (err, buf) {
             if (err) {
                 deferred.reject(err);
                 return;
