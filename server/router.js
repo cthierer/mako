@@ -41,9 +41,14 @@ var ServerRouter = function () {
     };
 
     function getAuthProviders () {
-        return {
-            'github': getGitHubAuthRouter(config.get('github'))
-        };
+        var providerFactory = new authentication.services.ProviderFactory();
+
+        // TODO encapsulate the configuration object definition 
+        providerFactory.add('github',{
+            'client_id' : config.get('github.oauth.client_id')
+        }, getGitHubAuthRouter(config.get('github')));
+
+        return providerFactory;
     };
 
     function getSessionController () {
