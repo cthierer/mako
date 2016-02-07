@@ -7,13 +7,16 @@
     <body>
         <h1>Mako Web Client</h1>
         <a id="github-login" href="#">Log in using GitHub</a>
+        <div id="login-panel">
+            <p>Click the link above to open a pop-up and login using GitHub.</p>
+        </div>
 
         <script type="text/javascript">
         $(document).ready(function () {
             $('#github-login').click(function (event) {
                 event.preventDefault();
 
-                console.log('login triggered');
+                $(this).hide();
 
                 $.ajax({
                     contentType: 'application/json',
@@ -24,9 +27,42 @@
                     },
                     method: 'POST',
                     success: function (data) {
-                        console.log('Starting new session');
+                        var container = $('#login-panel');
 
-                        window.location = 'https://github.com/login/oauth/authorize?client_id=a546b94001f3e57686c5&state=' + data['id'];
+                        // must use pop-up; GitHub blocks iframes using X-Frame-Options
+                        // TODO make client id configurable based on initial API call
+                        var loginWindow = window.open(
+                            'https://github.com/login/oauth/authorize?client_id=a546b94001f3e57686c5&state=' + 
+                            data['id'], 'GitHub login');
+
+                        window.addEventListener('message', function (event) {
+                            var origin = event.origin || event.originalEvent.origin,
+                                data = event.data;
+
+                            // origin check is considered more secure 
+                            // https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage
+                            // TODO make origin configurable based on initial API call
+                            if (origin === 'http://localhost:4000' && 
+                                    data.type === 'auth:success') {
+                                var params = data.params,
+                                    message = $('<p></p>'),
+                                    details = $('<dl></dl>');
+
+                                message.append('Successfully authenticated!');
+                                details.append('<dt>Provider</dt>');
+                                details.append('<dd>' + params.provider + '</dd>');
+                                details.append('<dt>Session ID</dt>');
+                                details.append('<dd>' + params.id + '</dd>');
+                                details.append('<dt>Token</dt>');
+                                details.append('<dd>' + params.token + '</dd>');
+
+                                container.empty();
+                                container.append(message);
+                                container.append(details);       
+
+                                loginWindow.close();                        
+                            }
+                        }, false);
                     },
                     url: 'http://localhost:4000/auth/sessions'
                 });

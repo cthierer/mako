@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Successful Authentication | Mako Web Client</title>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    </head>
+    <body>
+        <h1>Welcome!</h1>
+        <p id="auth-message">You successfully authenticated.</p>
+        <p>This window should close automatically.</p>
+
+        <script type="text/javascript">
+
+        // adapted from http://stackoverflow.com/a/2880929
+        function parseParams (queryStr) {
+            var match,
+                search = /([^&=]+)=?([^&]*)/g,
+                decode = function (s) { return decodeURIComponent(s.replace(/\+/g, '')); },
+                params = {};
+
+            while (match = search.exec(queryStr)) {
+                params[decode(match[1])] = decode(match[2]);
+            }
+
+            return params;
+        }
+
+        // TODO bad practice to use '*' as target origin
+        // https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage
+        $(document).ready(function () {
+            var params = parseParams(window.location.hash.substr(1));
+
+            window.opener.postMessage({
+                type: 'auth:success',
+                params: params
+            }, '*');
+        });
+        </script>
+    </body>
+</html>

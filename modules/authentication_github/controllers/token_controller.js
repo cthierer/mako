@@ -4,6 +4,7 @@
  */
 
 var assert = require('assert'),
+    querystring = require('querystring'),
     _ = require('lodash'),
     TokenService = require('../services').Token;
 
@@ -28,7 +29,10 @@ var TokenController = function (tokenService, sessionService) {
         tokenService.createToken(code, state).then(function (result) {
             return sessionService.activateSession(state, result.accessToken)
                 .then(function (session) {
-                    res.send(session);
+                    // TODO find better way to redirect/render an HTML page
+                    res.header('Location', '/app/auth_success.html#' + 
+                        querystring.stringify(session));
+                    res.send(303, session);
                 });
         }).catch(function (err) {
             res.send(err);
